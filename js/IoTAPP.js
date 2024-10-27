@@ -19,39 +19,37 @@ firebase.initializeApp(firebaseConfig);
 // Firebase database reference
 var dbRef = firebase.database();
 
-var Temperatura = 0;
-var Presion = 0;
-var Altitud = 0;
-var Humedad = 0;
+//Sensor de Movimiento
+let dbMotionSensor = dbRef.ref("ESP32IoTApp/SensorControl/estado");
 
-// Retrieve Temperature value from Firebase and update the webpage
-let dbTemperatura = dbRef.ref("ESP32IoTApp/Temperatura/");
-dbTemperatura.on('value', function(snapshot) {
-  Temperatura = snapshot.val();
-  document.getElementById("TemperaturaId").innerHTML = Temperatura + " °C";
-  console.log("El valor de la Temperatura es", Temperatura);
+$(document).ready(function() {
+  $("#switchMovimiento").change(function() {
+    if ($(this).is(':checked')) {
+      // Switch is ON
+      dbMotionSensor.set("Encendido");
+      console.log("Sensor de movimiento: Encendido");
+    } else {
+      // Switch is OFF
+      dbMotionSensor.set("Apagado");
+      console.log("Sensor de movimiento: Apagado");
+    }
+  });
 });
 
-// Retrieve Pressure value from Firebase and update the webpage
-let dbPresion = dbRef.ref("ESP32IoTApp/Presion/");
-dbPresion.on('value', function(snapshot) {
-  Presion = snapshot.val();
-  document.getElementById("PresionId").innerHTML = Presion + " mmHg";
-  console.log("El valor de la Presion es", Presion);
-});
 
-// Retrieve Altitude value from Firebase and update the webpage
-let dbAltitud = dbRef.ref("ESP32IoTApp/Altitud/");
-dbAltitud.on('value', function(snapshot) {
-  Altitud = snapshot.val();
-  document.getElementById("AltitudId").innerHTML = Altitud + " m";
-  console.log("El valor de la Altitud es", Altitud);
-});
+//Reproducir Sonido o Uso de Microfono
+let dbMusicControl = dbRef.ref("ESP32IoTApp/MusicaControl/estado");
 
-// Retrieve Humidity value from Firebase and update the webpage
-let dbHumedad = dbRef.ref("ESP32IoTApp/Humedad/");
-dbHumedad.on('value', function(snapshot) {
-  Humedad = snapshot.val();
-  document.getElementById("HumedadId").innerHTML = Humedad + " %";
-  console.log("El valor de la Humedad es", Humedad);
+$(document).ready(function() {
+  $("#switchMusicaMic").change(function() {
+    if ($(this).is(':checked')) {
+      // Switch is ON
+      dbMusicControl.set("Música");
+      console.log("Estado de reproduccion: Música");
+    } else {
+      // Switch is OFF
+      dbMusicControl.set("Micrófono");
+      console.log("Estado de reproduccion: Micrófono");
+    }
+  });
 });
