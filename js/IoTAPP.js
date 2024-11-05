@@ -53,3 +53,11 @@ $(document).ready(function() {
     }
   });
 });
+
+// Cancion en reproduccion
+let dbCancion = dbRef.ref("ESP32IoTApp/CancionSeleccion/estado");
+dbCancion.on('value', function(snapshot) {
+  Cancion = snapshot.val();
+  document.getElementById("cancionNombre").innerHTML = Cancion;
+  console.log("La cancion que se encuentra reproduciendo es: ", Cancion);
+});
